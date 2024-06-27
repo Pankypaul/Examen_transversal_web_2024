@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>footer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+
+<body>
+    {% block content %}
+    <footer class="color-fondo mb-0">
+        <div class="display-footer">
+            <div class="borde-derecha">
+                <ul class="cambiar-texto-footer">
+                    <li><a href="./Nosotros.html" class="quitar-azul">La empresa</a></li>
+                    <li><a href="./Catalogo.html" class="quitar-azul">Productos</a></li>
+                    <li><a href="./Nosotros.html" class="quitar-azul">Quienes Somos</a></li>
+                    <li><a href="./index.html" class="quitar-azul">Servicios</a></li>
+                    <li><a href="./Nosotros.html" class="quitar-azul">Contacto</a></li>
+                    <li><a href="./noticias.html" class="quitar-azul">Noticias</a></li>
+                </ul>
+            </div>
+    
+            <div class="text-center borde-derecha">
+                <h3 class="color-blanco">¿Dónde encontrarnos?</h3>
+                <a href="https://www.google.com/maps" class="quitar-azul2">El Árbol 123. Santiago. <br> Región Metropolitana</a>
+            </div>
+    
+            <div class="text-center">
+                <h3 class="color-blanco2 mt-2">Contactos</h3>
+                <ul class="cambiar-texto-footer">
+                    <li><a href="https://www.instagram.com" class="quitar-azul2">Instragram</a></li>
+                    <li><a href="https://web.facebook.com/?locale=es_LA&_rdc=1&_rdr" class="quitar-azul2">Facebook</a></li>
+                    <li><a href="https://twitter.com/?lang=es" class="quitar-azul2">Twitter</a></li>
+                    <li><a href="https://www.whatsapp.com/?lang=es_LA" class="quitar-azul2">WhatsApp</a></li>
+                    <li><a href="https://www.google.com/intl/es-419/gmail/about/" class="quitar-azul2">E-mail</a></li>
+                </ul>
+            </div>
+        </div>
+    
+        <div class="text-center">
+            <h2 class="color-distinto">Mega Games</h2>
+            <p class="color-distinto">Términos de uso Políticas de privacidad Política de derechos de autor</p>
+            <p class="color-distinto-tras">© 2024 Mega Games • Diseñado por: VisionWeb</p>    
+        </div>
+    </footer>
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
