@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Videojuego
+from .models import Videojuego, Consola
 from . forms import VideojuegoForm, ConsolaForm
 from django.conf import settings
 
@@ -25,8 +25,11 @@ def crear_consola(request):
         form = ConsolaForm()
     return render(request,'formulario_consola.html',{'form':form})
 
-def lista_videojuegos(request):
-    videojuegos = Videojuego.objects.all()
+def lista_videojuegos(request, consola=None):
+    if consola:
+        videojuegos = Videojuego.objects.filter(id_consola=consola).order_by,('nom_juego')
+    else:
+        videojuegos = Videojuego.objects.all().order_by('id_consola','nom_juego')
     context ={
         'videojuegos': videojuegos,
         'MEDIA_URL': settings.MEDIA_URL,
@@ -47,7 +50,7 @@ def editar_videojuego(request, pk):
     return render(request, 'editar_videojuego.html',{'form':form})
 
 def lista_inicio(request):
-    videojuegos = Videojuego.objects.all()
+    videojuegos = Videojuego.objects.order_by('id_consola', 'nom_juego')
     context ={
         'videojuegos': videojuegos,
         'MEDIA_URL': settings.MEDIA_URL,
@@ -60,3 +63,26 @@ def eliminar_videojuego(request, pk):
         videojuego.delete()
         return redirect('lista_videojuegos')
     return render(request, 'confirmar_eliminacion.html',{'videojuego':videojuego})
+
+def lista_videojuegos_consola(request, consola):
+    consola_obj = Consola.objects.get(nombre=consola)
+
+    videojuegos = Videojuego.objects.filter(id_consola=consola_obj).order_by('nom_juego')
+
+    context = {
+        'videojuegos': videojuegos,
+        'consola': consola,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'lista_videojuegos_consola.html', context)
+
+def juego_detalle(request, juego_id):
+    videojuego = get_object_or_404(Videojuego, pk=juego_id)
+    juegos_recomendados = Videojuego.objects.filter(id_consola=videojuego.id_consola).exclude(pk=juego_id).order_by('?')[:2]
+
+    context = {
+        'videojuego': videojuego,
+        'juegos_recomendados': juegos_recomendados,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'juego.html', context)
