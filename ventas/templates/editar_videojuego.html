@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container fondo-carrito mt-2 mb-2">
+    <h1 class="text-center">Editar Videojuego</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex mx-auto">
+            <button type="submit" class="mb-2 mx-auto">Guardar cambios</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
