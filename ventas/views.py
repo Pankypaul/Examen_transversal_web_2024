@@ -86,3 +86,13 @@ def juego_detalle(request, juego_id):
         'MEDIA_URL': settings.MEDIA_URL,
     }
     return render(request, 'juego.html', context)
+
+def buscar_juegos(request):
+    query = request.GET.get('q','')
+    juegos = Videojuego.objects.filter(nom_juego__icontains=query)
+    context = {
+        'query':query,
+        'juegos': juegos,
+
+    }
+    return render(request, 'resultado_busqueda.html', context)
