@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import agregar_al_carrito, ver_carrito, eliminar_del_carrito
 
 urlpatterns = [
     path('videojuegos/nuevo', views.crear_videojuego, name='crear_videojuego'),
@@ -11,5 +12,8 @@ urlpatterns = [
     path('videojuegos/<str:consola>/', views.lista_videojuegos_consola, name='lista_videojuegos_consola'),
     path('videojuego/<int:juego_id>/', views.juego_detalle, name='juego_detalle'),
     path('buscar/', views.buscar_juegos, name='buscar_juegos'),
-    path('nosotros/', views.nosotros, name='nosotros')
+    path('nosotros/', views.nosotros, name='nosotros'),
+    path('agregar_carrito/<int:videojuego_id>/', agregar_al_carrito, name='agregar_al_carrito'),
+    path('ver_carrito/', ver_carrito, name='ver_carrito'),
+    path('eliminar_del_carrito/<int:elemento_carrito_id>', eliminar_del_carrito, name='eliminar_del_carrito'),
 ]

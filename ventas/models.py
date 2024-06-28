@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import os
 
 def get_image_path(instance, filename):
@@ -53,3 +54,14 @@ class Compra(models.Model):
 
     def __str__(self):
         return f"Compra #{self.id_compra} - Usuario: {self.rut}, Producto: {self.id_producto}"
+    
+class Carrito(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+class ElementoCarrito(models.Model):
+    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)
+    videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    precio = models.IntegerField()

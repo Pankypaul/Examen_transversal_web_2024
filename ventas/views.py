@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Videojuego, Consola
-from . forms import VideojuegoForm, ConsolaForm
+from .models import Videojuego, Consola, Carrito, ElementoCarrito
+from .forms import VideojuegoForm, ConsolaForm
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 def crear_videojuego(request):
     if request.method == 'POST':
@@ -102,3 +103,37 @@ def nosotros(request):
         'MEDIA_URL': settings.MEDIA_URL,
     }
     return render(request, 'nosotros.html', context)
+
+@login_required
+def agregar_al_carrito(request, videojuego_id):
+    videojuego = get_object_or_404(Videojuego, id_producto = videojuego_id)
+    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
+    elemento_carrito, creado = ElementoCarrito.objects.get_or_create(
+        carrito=carrito, videojuego=videojuego, defaults={'precio': videojuego.precio}
+    )
+
+    if not creado:
+        elemento_carrito.cantidad +=1
+        elemento_carrito.save()
+
+    return redirect('ver_carrito')
+@login_required
+def ver_carrito(request):
+    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
+    elementos_carrito = ElementoCarrito.objects.filter(carrito=carrito)
+    total_precio = sum(item.precio * item.cantidad for item in elementos_carrito)
+    iva = total_precio * 0.19
+    subtotal = total_precio - iva
+    context = {
+        'elementos_carrito': elementos_carrito,
+        'total_precio': total_precio,
+        'iva':iva,
+        'subtotal':subtotal,
+    }
+    return render(request, 'carrito.html', context)
+
+@login_required
+def eliminar_del_carrito(request, elemento_carrito_id):
+    elemento_carrito = get_object_or_404(ElementoCarrito, id=elemento_carrito_id)
+    elemento_carrito.delete()
+    return redirect('ver_carrito')
