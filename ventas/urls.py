@@ -16,4 +16,6 @@ urlpatterns = [
     path('agregar_carrito/<int:videojuego_id>/', agregar_al_carrito, name='agregar_al_carrito'),
     path('ver_carrito/', ver_carrito, name='ver_carrito'),
     path('eliminar_del_carrito/<int:elemento_carrito_id>', eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('registrar/', views.registrar, name='registrar'),
+    path('nueva_comuna/', views.crear_comuna, name='crear_comuna'),
 ]

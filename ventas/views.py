@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Videojuego, Consola, Carrito, ElementoCarrito
-from .forms import VideojuegoForm, ConsolaForm
+from .models import Videojuego, Consola, Carrito, ElementoCarrito, Usuario
+from .forms import VideojuegoForm, ConsolaForm, UsuarioForm, ComunaForm
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
@@ -137,3 +137,35 @@ def eliminar_del_carrito(request, elemento_carrito_id):
     elemento_carrito = get_object_or_404(ElementoCarrito, id=elemento_carrito_id)
     elemento_carrito.delete()
     return redirect('ver_carrito')
+
+def registrar(request):
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+
+        if form.is_valid():
+            nuevo_usuario = form.save(commit=False)
+            nuevo_usuario.password = form.cleaned_data['password']
+            nuevo_usuario.save()
+            return redirect('lista_inicio')
+    else:
+        form = UsuarioForm()
+
+    context = {
+        'form': form,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'registrar.html', context)
+
+def crear_comuna(request):
+    if request.method == 'POST':
+        form = ComunaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_inicio')
+    else:
+        form = ComunaForm()
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'crear_comuna.html',context)
