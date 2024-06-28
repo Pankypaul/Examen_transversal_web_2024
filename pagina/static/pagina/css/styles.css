@@ -37,6 +37,25 @@ html, body{/*Fondo de pantalla*/
     max-height: 790px;
 }
 
+.relleno{
+    padding: 0.5rem;
+}
+
+.borde1{
+    border: 1px black solid;
+    border-radius: 20px 0px;
+    background-color: antiquewhite;
+}
+
+.centrar-titulo2{
+    text-align: justify;
+    color: black;
+}
+
+.tam-titulo2{
+    font-size: 3rem;
+}
+
 .texto{
     font-size: 1.5rem;
 }

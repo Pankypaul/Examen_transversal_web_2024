@@ -96,3 +96,9 @@ def buscar_juegos(request):
 
     }
     return render(request, 'resultado_busqueda.html', context)
+
+def nosotros(request):
+    context = {
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'nosotros.html', context)
