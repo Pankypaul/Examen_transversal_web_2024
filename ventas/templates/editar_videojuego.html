@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container fondo-carrito mt-2 mb-2">
-    <h1 class="text-center">Editar Videojuego</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="d-flex mx-auto">
-            <button type="submit" class="mb-2 mx-auto">Guardar cambios</button>
-        </div>
-    </form>
+<div class="container d-flex justify-content-center align-items-center mt-4 mb-4 bordear" style="min-height: 90vh;">
+    <div class="fondo-carrito w-100 p-4 mx-auto bordear text-center" style="max-width: 700px;">
+        <h1>Editar Videojuego</h1>
+        <hr>
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary mb-2 mx-auto">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
 </div>
-
 {% endblock %}
+
+<!-- Ordenado 27-06-2024 -->

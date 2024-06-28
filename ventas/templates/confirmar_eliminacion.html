@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<body>
-    <div class="fondo-carrito mb-2 mt-2">
-        <h1 class="text-center">¿Estás seguro de que deseas eliminar "{{ videojuego.nom_juego }}" para {{ videojuego.id_consola.nombre}} ?</h1>
-        <div class="d-flex justify-content-center">
-            <img src="{{ videojuego.image.url }}" alt="" class="tam_foto mb-2 mt-2 bordear">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="fondo-carrito mb-2 mt-2 bordear  p-4">
+        <h1 class="text-center">¿Estás seguro de que deseas eliminar "{{ videojuego.nom_juego }}" para {{ videojuego.id_consola.nombre }}?</h1>
+        <div class=" text-center justify-content-between ">
+            <img src="{{ videojuego.image.url }}" alt="Imagen de {{ videojuego.nom_juego }}" class="tam_foto bordear mt-2 mb-3">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                <a href="{% url 'lista_videojuegos' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
         </div>
-        <form method="post" class="text-center">
-            {% csrf_token %}
-            <button type="submit" class="mb-2">Sí, eliminar</button>
-            <a href="{% url 'lista_videojuegos' %}">Cancelar</a>
-        </form>
     </div>
-    
-</body>
+</div>
 {% endblock %}
+
+<!-- Ordenado 27-06-2024 -->
