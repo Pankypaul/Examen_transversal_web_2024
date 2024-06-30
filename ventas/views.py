@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 def crear_consola(request):
     if request.method == 'POST':
@@ -83,17 +84,21 @@ def redireccion_juegos(request, consola=None):
     }
     return render(request, template, context)
 
-def lista_videojuegos_consola(request, consola):
+def redireccionar_consola(request, consola):
     consola_obj = Consola.objects.get(nombre=consola)
-
     videojuegos = Videojuego.objects.filter(id_consola=consola_obj).order_by('nom_juego')
+    if request.user.is_authenticated and request.user.is_staff:
+        template = 'lista_videojuegos_consola_staff.html'
+
+    else:
+        template = 'lista_videojuegos_consola.html'
 
     context = {
         'videojuegos': videojuegos,
         'consola': consola,
         'MEDIA_URL': settings.MEDIA_URL,
     }
-    return render(request, 'lista_videojuegos_consola.html', context)
+    return render(request, template, context)
 
 def juego_detalle(request, juego_id):
     videojuego = get_object_or_404(Videojuego, pk=juego_id)
@@ -106,15 +111,22 @@ def juego_detalle(request, juego_id):
     }
     return render(request, 'juego.html', context)
 
-def buscar_juegos(request):
-    query = request.GET.get('q','')
-    juegos = Videojuego.objects.filter(nom_juego__icontains=query)
+def redireccion_buscar(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        query = request.GET.get('q','')
+        juegos = Videojuego.objects.filter(nom_juego__icontains=query)
+        template = 'resultado_busqueda_staff.html'
+
+    else:
+        query = request.GET.get('q','')
+        juegos = Videojuego.objects.filter(nom_juego__icontains=query)
+        template ='resultado_busqueda.html'
     context = {
         'query':query,
         'juegos': juegos,
-
+        'MEDIA_URL': settings.MEDIA_URL,
     }
-    return render(request, 'resultado_busqueda.html', context)
+    return render(request, template, context)
 
 def nosotros(request):
     context = {
@@ -135,7 +147,7 @@ def agregar_al_carrito(request, videojuego_id):
         elemento_carrito.save()
 
     return redirect('ver_carrito')
-@login_required
+@login_required(login_url='accounts/login/')
 def ver_carrito(request):
     carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
     elementos_carrito = ElementoCarrito.objects.filter(carrito=carrito)
@@ -149,6 +161,19 @@ def ver_carrito(request):
         'subtotal':subtotal,
     }
     return render(request, 'carrito.html', context)
+
+def custom_login_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request, 'Necesita iniciar sesión para entrar al carrito')
+            return redirect('/accounts/login/')
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+@custom_login_required
+def ver_carrito(request):
+
+    pass
 
 @login_required
 def eliminar_del_carrito(request, elemento_carrito_id):
@@ -187,3 +212,4 @@ def iniciar_sesion(request):
 def cerrar_sesion(request):
     logout(request)
     return redirect('lista_inicio')
+

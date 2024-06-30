@@ -5,25 +5,25 @@
     <div class="row">
         {% for juego in juegos %}
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mt-2 mb-4 mx-auto text-center">
-                <a href="{% url 'juego_detalle' juego.pk %}" class="card bordear tamaño-card mx-auto text-decoration-none">
+                <a href="{% url 'juego_detalle' juego.pk %}" class="text-decoration-none">
                     <div class="card bordear tamaño-card mx-auto">
                         <img src="{{ juego.image.url }}" class="card-img-top bordear tam_foto" alt="{{ juego.nom_juego }}">
                         <div class="card-body">
-                            <h5 class="card-title">{{ juego.nom_juego }}</h5>
-                            <p class="card-text negrita">{{ juego.id_consola.nombre }}</p>
+                            <p class="card-text texto-card">{{ juego.nom_juego }}</p>
+                            <p class="card-text texto-card">{{ juego.id_consola.nombre }}</p>
+                            <div class="mt-2">
+                                <a href="{% url 'editar_videojuego' juego.pk %}" class="btn btn-primary">Editar</a>
+                                <a href="{% url 'eliminar_videojuego' juego.pk %}" class="btn btn-danger">Eliminar</a>
+                            </div>
                         </div>
                     </div>
                 </a>
-                <!-- Botones de Editar y Eliminar -->
-                <div class="mt-2">
-                    <a href="{% url 'editar_videojuego' juego.pk %}" class="btn btn-primary">Editar</a>
-                    <a href="{% url 'eliminar_videojuego' juego.pk %}" class="btn btn-danger">Eliminar</a>
-                </div>
             </div>
-        {% empty %}
-            <p class="color-blanco2 text-center">No se encontraron juegos que coincidan con la búsqueda.</p>
+            {% empty %}
+                <p class="color-blanco2 text-center">No se encontraron juegos que coincidan con la búsqueda.</p>
         {% endfor %}
     </div>
 </div>
 
 {% endblock %}
+
