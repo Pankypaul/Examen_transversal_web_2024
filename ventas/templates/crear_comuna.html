@@ -2,13 +2,16 @@
 
 {% block content %}
 <main>
-    <section class="container">
-        <h2>Crear Nueva Comuna</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
+    <section class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="fondo-carrito text-center mx-auto mb-4 mt-4 bordear p-4 " style="max-width: 500px;">
+        
+            <h2 class="mt-4">Crear Nueva Comuna</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
     </section>
 </main>
 {% endblock %}
