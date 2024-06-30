@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container fondo-carrito mb-2 mt-2">
-    <h2 class="text-center">Crear Videojuego</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="mb-2">Guardar</button>
-    </form>
-</div>
-    
+    <div class="container d-flex justify-content-center align-items-center mt-4 mb-4 bordear" style="min-height: 90vh;">
+        <div class="fondo-carrito w-100 p-4 mx-auto bordear text-center" style="max-width: 700px;">
+            <h1>Crear Videojuego</h1>
+            <hr>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mb-2 mx-auto">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
+
+<!-- Ordenado 27-06-2024 -->
 
 
