@@ -3,13 +3,17 @@
 
 {% block content %}
 <main>
-    <section class="container">
-        <h2>Crear Cuenta</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Registrar</button>
-        </form>
+    <section class="container d-flex justify-content-center align-items-center mt-2 mb-4 bordear" style="min-height: 90vh;">
+        <div class="fondo-carrito w-100 p-4 mx-auto bordear text-center" style="max-width: 700px;">
+            
+            <h2>Crear Cuenta</h2>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </form>
+        </div>
     </section>
 </main>
 {% endblock %}
