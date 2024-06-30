@@ -8,6 +8,10 @@
 
 <hr class="mt-3 centrar_titulo">
     <main>
+      {% if user.is_authenticated %}
+      <p>Bienvenido, {{ user.username }}</p>
+      <a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a>
+      {% endif %}
         <!-- carrusel -->
         <section class="tamaño mx-auto">
             <div id="carouselExampleCaptions" class="carousel slide">

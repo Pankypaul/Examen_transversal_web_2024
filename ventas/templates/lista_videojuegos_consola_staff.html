@@ -26,19 +26,19 @@
         <div class="row">
             {% for videojuego in videojuegos %}
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mt-2 mb-4 mx-auto text-center">
-                    <div class="card bordear tamaño-card mx-auto">
-                        <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
+                    <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
+                        <div class="card bordear tamaño-card mx-auto">
                             <img src="{{ videojuego.image.url }}" class="card-img-top bordear tam_foto" alt="{{ videojuego.nom_juego }}">
-                        </a>
-                        <div class="card-body">
-                            <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
+                            <div class="card-body">
                                 <p class="card-text texto-card">{{ videojuego.nom_juego }}</p>
-                            </a>
-                            <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
                                 <p class="card-text texto-card">{{ videojuego.id_consola.nombre }}</p>
-                            </a>
+                                <div class="mt-2">
+                                    <a href="{% url 'editar_videojuego' videojuego.pk %}" class="btn btn-primary">Editar</a>
+                                    <a href="{% url 'eliminar_videojuego' videojuego.pk %}" class="btn btn-danger">Eliminar</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>

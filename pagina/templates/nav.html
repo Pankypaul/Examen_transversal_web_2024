@@ -22,7 +22,7 @@
                         </li>
 
                         <li class="nav-item separar_items">
-                            <p id="btnIniciar2" class="nav-link tam-fuente d-block d-md-none d-lg-none d-xl-none d-xxl-none">Iniciar sesion</p>
+                            <a class="nav-link tam-fuente d-block d-md-none d-lg-none d-xl-none d-xxl-none" href="{% url 'ingresar' %}">Iniciar sesion</a>
                         </li>
 
                         <li class="nav-item separar_items">
@@ -36,7 +36,7 @@
                         <input name="q" id="buscarJuegoPage" class="form-control mr-sm-2 controlar-forma" type="search" placeholder="Buscar" aria-label="Search">
                         <button id="botonBuscarPage" class="btn btn-outline-success" type="submit">🔎</button>
                         <a class="quitar-link" href="{% url 'ver_carrito' %}"><button class="btn btn-outline-success d-none d-sm-block" type="button">🛒</button></a>
-                        <a class="quitar-link" href="{% url 'registrar' %}"><button class="btn btn-outline-success d-none d-sm-block" type="button">👤</button></a>
+                        <a class="quitar-link" href="{% url 'ingresar' %}"><button class="btn btn-outline-success d-none d-sm-block" type="button">👤</button></a>
                     </div>
                 </form>
             </div>

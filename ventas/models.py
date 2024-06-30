@@ -31,34 +31,9 @@ class Videojuego(models.Model):
     def __str__(self):
         return self.nom_juego
 
-class Usuario(models.Model):
-    rut = models.CharField(primary_key=True, max_length=20)
-    nombre = models.CharField(max_length=100)
-    a_paterno = models.CharField(max_length=100)
-    a_materno = models.CharField(max_length=100)
-    direccion = models.CharField(max_length=100)
-    id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
-    email1 = models.EmailField()
-    cel1 = models.CharField(max_length=20)
-    password = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"{self.rut} - {self.nombre} {self.a_paterno} {self.a_materno}"
-    
-class Vendedor(models.Model):
-    rut = models.CharField(primary_key=True, max_length=20)
-    nombre = models.CharField(max_length=100)
-    a_paterno = models.CharField(max_length=100)
-    a_materno = models.CharField(max_length=100)
-    direccion = models.CharField(max_length=100)
-    id_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
-    email1 = models.EmailField()
-    cel1 = models.CharField(max_length=20)
-    password = models.CharField(max_length=100)
-
 class Compra(models.Model):
     id_compra = models.AutoField(primary_key=True)
-    rut = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    rut = models.ForeignKey(User, on_delete=models.CASCADE)
     id_producto = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
     stock = models.IntegerField()
     direccion_envio = models.TextField()
