@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
-from .views import agregar_al_carrito, ver_carrito, eliminar_del_carrito
-from django.contrib.auth.views import LoginView
+from .views import agregar_al_carrito, ver_carrito, eliminar_del_carrito, confirmar_logout, resetear_contrasena, password_reset_confirm
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', views.lista_inicio, name='lista_inicio'),
@@ -19,6 +19,8 @@ urlpatterns = [
     path('eliminar_del_carrito/<int:elemento_carrito_id>', eliminar_del_carrito, name='eliminar_del_carrito'),
     path('nueva_comuna/', views.crear_comuna, name='crear_comuna'),
     path('registrar/', views.registrar_usuario, name='registrar'),
-    path('ingresar', views.iniciar_sesion, name='ingresar'),
-    path('cerrar_sesion', views.cerrar_sesion, name='cerrar_sesion'),
+    path('accounts/confirm_logout/', views.confirmar_logout, name='confirm_logout'),
+    path('accounts/logout/', TemplateView.as_view(template_name='registration/logged_out.html'), name='logged_out'),
+    path('resetear_contrasena/', views.resetear_contrasena, name='resetear_contrasena'),
+    path('resetear_contrasena/confirm/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
 ]

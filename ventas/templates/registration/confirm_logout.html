@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Deseas cerrar sesión?</h2>
+    <form method="post" action="{% url 'confirm_logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+      <a href="{% url 'lista_inicio' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %%}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Has cerrado sesión</h2>
+    <p>Gracias por visitarnos. Esperamos verte pronto.</p>
+    <a href="{% url 'lista_inicio' %}" class="btn btn-primary">Volver al inicio</a>
+  </div>
+{% endblock %}

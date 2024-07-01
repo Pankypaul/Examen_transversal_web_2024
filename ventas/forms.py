@@ -3,6 +3,9 @@ from .models import Videojuego, Consola, Comuna
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+import six
 
 class VideojuegoForm(forms.ModelForm):
     class Meta:
@@ -69,3 +72,41 @@ class AutentificacionForm(AuthenticationForm):
         ),
         'inactive': _("Tu cuenta está inactiva."),
     }
+
+class ResetPasswordForm(forms.Form):
+    email = forms.EmailField()
+
+    def save(self):
+        email = self.cleaned_data['email']
+        try:
+            usuario = User.objects.get(username=email)
+            return usuario
+        except User.DoesNotExist:
+            raise ValidationError("No hay ninguna cuenta asociada a ese correo electrónico.")
+
+
+class CambiarContrasenaForm(forms.Form):
+    password = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput)
+    confirm_password = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            raise forms.ValidationError("Las contraseñas no coinciden.")
+
+        return cleaned_data
+    
+
+
+
+class TokenGenerator(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        return (
+            six.text_type(user.pk) + six.text_type(timestamp) +
+            six.text_type(user.is_active)
+        )
+
+account_activation_token = TokenGenerator()

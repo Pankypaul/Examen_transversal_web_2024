@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <h2{% if message.tags %} class="{{ message.tags }} color-blanco2 text-center mt-2"{% endif %}>{{ message }}</h2>
+        {% endfor %}
+    </ul>
+{% endif %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+    <div class="d-flex">
+    <p>¿Todavia no estas registrado?&nbsp;</p><a href="{% url 'registrar' %}">Pues pulsa start para unirte!!!</a>
+    </div>
+{% endblock %}
