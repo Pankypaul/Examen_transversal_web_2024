@@ -1,10 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Restablecer contrasena</button>
-</form>
+<section class="container d-flex justify-content-center align-items-center flex-column" style="min-height: 70vh;">
+    <div class="fondo-carrito text-center mx-auto mb-2 w-100 mt-4 bordear col-lg-4 p-5" style="max-width: 500px;">
+        <h3>Restablecer contraseña </h3>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <hr>
+            <p>*Al ingresar tu correo electrónico registrado, recibirás un enlace en tu bandeja de entrada con el cual podrás restablecer tu contraseña*</p>
+            <button type="submit" class="btn btn-primary">Restablecer </button>
+        </form>
+    </div>
+
+
+    <div class="container fondo-carrito text-center mx-auto mb-4 mt-2 w-100 bordear p-1 col-lg-4" style="max-width: 500px;">
+
+        <div class="row">
+            <p class="d-inline">¿Ya estás registrado?</p>
+            <a href="{% url 'login' %}" class="btn btn-link">¡Pulsa aquí para unirte!</a>
+        </div>
+        <div class="">
+            <p >¿Todavía no estás registrado?</p>
+            <a href="{% url 'registrar' %}" class="btn btn-link">¡Pulsa aquí para unirte!</a>
+        </div>
+            
+    </div>
+</section>
 
 {% endblock %}
