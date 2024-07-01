@@ -33,13 +33,13 @@ class Videojuego(models.Model):
 
 class Compra(models.Model):
     id_compra = models.AutoField(primary_key=True)
-    rut = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_producto = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
-    stock = models.IntegerField()
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    videojuego = models.ForeignKey(Videojuego, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(default=0)
     direccion_envio = models.TextField()
 
     def __str__(self):
-        return f"Compra #{self.id_compra} - Usuario: {self.rut}, Producto: {self.id_producto}"
+        return f"Compra #{self.id_compra} - Usuario: {self.usuario.username}, Producto: {self.videojuego.nom_juego}"
     
 class Carrito(models.Model):
     usuario = models.ForeignKey(User, related_name='carritos', on_delete=models.CASCADE)
@@ -48,6 +48,9 @@ class Carrito(models.Model):
 
     def __str__(self):
         return f"Carrito de {self.usuario.username}"
+    def vaciar_carrito(self):
+        self.elementocarrito_set.all().delete()
+        self.delete()
 
 class ElementoCarrito(models.Model):
     carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)

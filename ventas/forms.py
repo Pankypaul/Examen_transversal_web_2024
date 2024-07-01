@@ -1,5 +1,5 @@
 from django import forms
-from .models import Videojuego, Consola, Comuna
+from .models import Videojuego, Consola, Comuna, Compra
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
@@ -110,3 +110,11 @@ class TokenGenerator(PasswordResetTokenGenerator):
         )
 
 account_activation_token = TokenGenerator()
+
+class DetallesPagoForm(forms.ModelForm):
+    tarjeta = forms.CharField(label='Número de tarjeta', max_length=16, required=True)
+    cvv = forms.CharField(label='CVV', max_length=4, required=True)
+
+    class Meta:
+        model = Compra
+        fields = ['direccion_envio', 'tarjeta', 'cvv']

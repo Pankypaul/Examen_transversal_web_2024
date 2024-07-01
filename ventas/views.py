@@ -1,7 +1,7 @@
 from django.forms import ValidationError
 from django.shortcuts import render,redirect, get_object_or_404
-from .models import Videojuego, Consola, Carrito, ElementoCarrito
-from .forms import VideojuegoForm, ConsolaForm,ComunaForm, RegistroUsuarioForm, AutentificacionForm, ResetPasswordForm, CambiarContrasenaForm
+from .models import Videojuego, Consola, Carrito, ElementoCarrito, Compra
+from .forms import VideojuegoForm, ConsolaForm,ComunaForm, RegistroUsuarioForm, AutentificacionForm, ResetPasswordForm, CambiarContrasenaForm, DetallesPagoForm
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -153,17 +153,26 @@ def nosotros(request):
 
 @login_required
 def agregar_al_carrito(request, videojuego_id):
-    videojuego = get_object_or_404(Videojuego, id_producto = videojuego_id)
-    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
-    elemento_carrito, creado = ElementoCarrito.objects.get_or_create(
-        carrito=carrito, videojuego=videojuego, defaults={'precio': videojuego.precio}
-    )
+    if request.method == 'POST':
+        videojuego = get_object_or_404(Videojuego, id_producto=videojuego_id)
+        carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
 
-    if not creado:
-        elemento_carrito.cantidad +=1
-        elemento_carrito.save()
+        cantidad = int(request.POST.get('cantidad', 1))
 
-    return redirect('ver_carrito')
+        elemento_carrito = ElementoCarrito.objects.filter(carrito=carrito, videojuego=videojuego).first()
+
+        if elemento_carrito is None:
+            elemento_carrito = ElementoCarrito.objects.create(
+                carrito=carrito, videojuego=videojuego, precio=videojuego.precio, cantidad=cantidad
+            )
+        else:
+            elemento_carrito.cantidad = cantidad
+            elemento_carrito.save()
+
+        return redirect('ver_carrito')
+    
+    return redirect('juego_detalle', videojuego_id=videojuego_id)
+    
 @login_required(login_url='accounts/login/')
 def ver_carrito(request):
     carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
@@ -329,18 +338,62 @@ def password_reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_confirm.html', {'form': form})
     else:
         return render(request, 'password_reset_invalid.html')
-@require_POST
-def actualizar_cantidad(request,product_id):
-    accion = request.POST.get('accion')
-    cantidad = int(request.POST.get('cantidad'))
-    videojuego = get_object_or_404(Videojuego, id_producto=product_id)
-    carrito = get_object_or_404(ElementoCarrito, carrito_usuario=request.user, videojuego=videojuego)
-    elemento_carrito = get_object_or_404(ElementoCarrito, carrito=carrito, videojuego=videojuego)
-    if accion == "sumar":
-        carrito.cantidad += cantidad
-    
-    elif accion == 'restar' and carrito.cantidad > cantidad:
-        carrito.cantidad -= cantidad
 
-    carrito.save()
-    return redirect('pagina:juego_detalle', product_id=product_id)
+def eliminar_juego_carrito(request, item_id):
+    if request.method == 'POST':
+        elemento = get_object_or_404(ElementoCarrito, id=item_id)
+        elemento.delete()
+        return redirect('ver_carrito')
+    return redirect('lista_inicio')
+@require_POST
+def  actualizar_cantidad_carrito(request, elemento_carrito_id):
+    elemento_carrito = get_object_or_404(ElementoCarrito, id=elemento_carrito_id)
+    carrito = elemento_carrito.carrito
+
+    action = request.POST.get('action')
+
+    if action == 'remove':
+        if elemento_carrito.cantidad > 1:
+            elemento_carrito.cantidad -= 1
+            elemento_carrito.save()
+    elif action == 'add':
+        if elemento_carrito.cantidad < elemento_carrito.videojuego.stock_juego:
+            elemento_carrito.cantidad += 1
+            elemento_carrito.save()
+
+    return redirect('ver_carrito')
+
+def obtener_carrito_usuario(usuario):
+    try:
+        carrito = Carrito.objects.get(usuario=usuario)
+    except Carrito.DoesNotExist:
+        carrito = Carrito(usuario=usuario)
+        carrito.save()
+    return carrito
+
+def pagar(request):
+    if request.method == 'POST':
+        form = DetallesPagoForm(request.POST)
+        if form.is_valid():
+            detalles_pago = form.save(commit=False)
+            detalles_pago.usuario = request.user
+
+            carrito = obtener_carrito_usuario(request.user)
+            if carrito:
+                for item in ElementoCarrito.objects.filter(carrito=carrito):
+                    compra = Compra(
+                        usuario=request.user,
+                        videojuego=item.videojuego,
+                        cantidad=item.cantidad,
+                        direccion_envio=detalles_pago.direccion_envio
+                    )
+                    compra.save()
+
+                carrito.elementocarrito_set.all().delete()
+                carrito.delete()
+
+            return redirect('lista_inicio')
+    else:
+        form = DetallesPagoForm()
+
+    return render(request, 'pagar.html', {'form': form})

@@ -23,5 +23,7 @@ urlpatterns = [
     path('accounts/logout/', TemplateView.as_view(template_name='registration/logged_out.html'), name='logged_out'),
     path('resetear_contrasena/', views.resetear_contrasena, name='resetear_contrasena'),
     path('resetear_contrasena/confirm/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
-    path('actualizar_cantidad/<int:product_id>', views.actualizar_cantidad, name='actualizar_cantidad'),
+    path('eliminar/<int:item_id>/', views.eliminar_juego_carrito, name='eliminar_juego_carrito'),
+    path('actualizar_cantidad_carrito/<int:elemento_carrito_id>/', views.actualizar_cantidad_carrito, name='actualizar_cantidad_carrito'),
+    path('pagar/', views.pagar, name='pagar'),
     ]
