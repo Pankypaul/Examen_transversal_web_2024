@@ -28,7 +28,7 @@
                         </div>
                         <img class="tamaño-fav" src="{{ MEDIA_URL }}pagina/favorito.png" alt="imagen fav">
                     </div>
-                    <div class="d-flex justify-content-center texto"><p id="precioEstiloPage" class="negrita">Precio:&nbsp;</p><p id="precioPage">${{ videojuego.precio }}</p></div>
+                    <div class="d-flex justify-content-center texto"><p id="precioEstiloPage" class="negrita">Precio:&nbsp;</p><p>${{ precio_formateado }}</p></div>
                     <a href="{% url 'agregar_al_carrito' videojuego.id_producto %}" class="d-flex btn btn-light mx-auto mt-4 mb-4 col-sm-4 col-md-4 col-lg-3 col-xl-2 negrita text-center">Agregar al Carrito</a>
                 </div>
             </div>

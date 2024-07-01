@@ -17,6 +17,7 @@ import ssl
 import smtplib
 from email.message import EmailMessage
 from django.contrib.auth.models import User
+from django.template.defaultfilters import floatformat
 
 def crear_consola(request):
     if request.method == 'POST':
@@ -115,9 +116,13 @@ def juego_detalle(request, juego_id):
     videojuego = get_object_or_404(Videojuego, pk=juego_id)
     juegos_recomendados = Videojuego.objects.filter(id_consola=videojuego.id_consola).exclude(pk=juego_id).order_by('?')[:2]
 
+    precio_formateado = "{:,.0f}".format(videojuego.precio)
+    precio_formateado = precio_formateado.replace(',', '.')
+
     context = {
         'videojuego': videojuego,
         'juegos_recomendados': juegos_recomendados,
+        'precio_formateado': precio_formateado,
         'MEDIA_URL': settings.MEDIA_URL,
     }
     return render(request, 'juego.html', context)
@@ -163,13 +168,25 @@ def ver_carrito(request):
     carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
     elementos_carrito = ElementoCarrito.objects.filter(carrito=carrito)
     total_precio = sum(item.precio * item.cantidad for item in elementos_carrito)
+
+    precio_formateado = "{:,.0f}".format(total_precio)
+    precio_formateado = precio_formateado.replace(',', '.')
+
+    iva_formateado = "{:,.0f}".format(iva)
+    iva_formateado = iva_formateado.replace(',', '.')
+
+    subtotal_formateado = "{:,.0f}".format(subtotal)
+    subtotal_formateado = subtotal_formateado.replace(',', '.')
+
     iva = total_precio * 0.19
     subtotal = total_precio - iva
     context = {
         'elementos_carrito': elementos_carrito,
-        'total_precio': total_precio,
-        'iva':iva,
-        'subtotal':subtotal,
+        'precio_formateado': precio_formateado,
+        'iva_formateado': iva_formateado,
+        'subtotal_formateado': subtotal_formateado,
+        'MEDIA_URL': settings.MEDIA_URL,
+
     }
     return render(request, 'carrito.html', context)
 
@@ -188,11 +205,21 @@ def ver_carrito(request):
     total_precio = sum(item.precio * item.cantidad for item in elementos_carrito)
     iva = total_precio * 0.19
     subtotal = total_precio - iva
+
+    precio_formateado = "{:,.0f}".format(total_precio)
+    precio_formateado = precio_formateado.replace(',', '.')
+
+    iva_formateado = "{:,.0f}".format(iva)
+    iva_formateado = iva_formateado.replace(',', '.')
+
+    subtotal_formateado = "{:,.0f}".format(subtotal)
+    subtotal_formateado = subtotal_formateado.replace(',', '.')
     context = {
         'elementos_carrito': elementos_carrito,
-        'total_precio': total_precio,
-        'iva':iva,
-        'subtotal':subtotal,
+        'precio_formateado': precio_formateado,
+        'iva_formateado': iva_formateado,
+        'subtotal_formateado': subtotal_formateado,
+        'MEDIA_URL': settings.MEDIA_URL,
     }
     return render(request, 'carrito.html', context)
 

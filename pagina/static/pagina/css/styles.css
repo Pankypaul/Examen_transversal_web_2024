@@ -85,6 +85,9 @@ html, body{/*Fondo de pantalla*/
     max-width: 60px;
     height: 40px;
 }
+.fondo-altura{
+    max-height: 20vh;
+}
 
 .tamaño-cuadro2{
     display: flex;
@@ -180,6 +183,11 @@ html, body{/*Fondo de pantalla*/
 .fondo-carrito{
     background-color: #AEB7B3;
  }
+
+ .tamaño-carrito{
+    max-width: 270px;
+    max-height: 300px;
+}
 
 .negrita{
     font-weight: bold;
