@@ -16,26 +16,34 @@
                         <div class="col-md-6 mb-3">
                             <label for="{{ form.first_name.id_for_label }}" class="form-label">Nombre:</label>
                             {{ form.first_name }}
+                            {{ form.first_name.errors }}
                         </div>
                         <div class="col-md-6 ">
                             <label for="{{ form.last_name.id_for_label }}" class="form-label">Apellido:</label>
                             {{ form.last_name }}
+                            {{ form.last_name.errors }}
+                            
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="{{ form.email.id_for_label }}" class="form-label">Correo electrónico:</label>
                         {{ form.email }}
+                        {{ form.email.errors }}
                     </div>
                     
                     <div class="row mb-3">
                         <div class="mb-3 col-md-6">
                             <label for="{{ form.password1.id_for_label }}" class="form-label">Contraseña:</label>
                             {{ form.password1 }}
+                            {{ form.password1.errors }}
+                            {% if form.password1.help_text %}
+                            {% endif %}
                         </div>
         
                         <div class="mb-3 col-md-6">
                             <label for="{{ form.password2.id_for_label }}" class="form-label">Repetir Contraseña:</label>
-                            {{ form.password2 }}
+                                {{ form.password2 }}
+                                {{ form.password2.errors }}
                         </div>
 
                     </div>
