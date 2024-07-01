@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% load humanize %}
 <main class="container-fluid mx-auto">
     <div class="row">
         <div class="col-md-6 py-0 px-0 fondo-carrito mx-2 mt-2 bordear2">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="col-4 col-md-3 col-lg-4 px-0 py-0 d-flex flex-column justify-content-center align-items-center negrita mx-auto mt-2">
-                        <p>${{ item.precio }}</p>
+                        <p>${{ item.precio|intcomma }}</p>
                         <button class="bordear2 mt-2">Borrar</button>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="col-md-5 py-0 px-0 fondo-carrito fondo-altura mx-2 mt-2 bordear2">
+        <div class="col-md-5 py-0 px-0 fondo-carrito mx-2 mt-2 bordear2" style="max-height: 20vh">
             <h4 class="text-center mt-1">Total</h4>
             <hr>
             <div class="row">
@@ -50,7 +50,7 @@
                 <hr>
                 <label class="col-7 mx-auto negrita" for="Total">Total:</label>
                 <p class="col-3 mx-auto negrita mb-2">${{ precio_formateado }}</p>
-                <div class="text-center"><button id="pagarBtn" class="bordear2 mt-4 negrita boton-grande mb-2 col-3">Pagar</button></div>
+                <div class="text-center"><button id="pagarBtn" class="bordear2 mt-4 negrita anchar-boton mb-2 col-3">Pagar</button></div>
             </div>
         </div>
     </div>

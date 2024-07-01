@@ -4,6 +4,7 @@ from .models import Videojuego, Consola, Carrito, ElementoCarrito
 from .forms import VideojuegoForm, ConsolaForm,ComunaForm, RegistroUsuarioForm, AutentificacionForm, ResetPasswordForm, CambiarContrasenaForm
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -328,3 +329,18 @@ def password_reset_confirm(request, uidb64, token):
         return render(request, 'password_reset_confirm.html', {'form': form})
     else:
         return render(request, 'password_reset_invalid.html')
+@require_POST
+def actualizar_cantidad(request,product_id):
+    accion = request.POST.get('accion')
+    cantidad = int(request.POST.get('cantidad'))
+    videojuego = get_object_or_404(Videojuego, id_producto=product_id)
+    carrito = get_object_or_404(ElementoCarrito, carrito_usuario=request.user, videojuego=videojuego)
+    elemento_carrito = get_object_or_404(ElementoCarrito, carrito=carrito, videojuego=videojuego)
+    if accion == "sumar":
+        carrito.cantidad += cantidad
+    
+    elif accion == 'restar' and carrito.cantidad > cantidad:
+        carrito.cantidad -= cantidad
+
+    carrito.save()
+    return redirect('pagina:juego_detalle', product_id=product_id)

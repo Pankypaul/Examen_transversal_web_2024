@@ -42,9 +42,12 @@ class Compra(models.Model):
         return f"Compra #{self.id_compra} - Usuario: {self.rut}, Producto: {self.id_producto}"
     
 class Carrito(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, related_name='carritos', on_delete=models.CASCADE)
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Carrito de {self.usuario.username}"
 
 class ElementoCarrito(models.Model):
     carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)

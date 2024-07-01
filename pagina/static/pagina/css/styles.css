@@ -8,9 +8,6 @@ html, body{/*Fondo de pantalla*/
     overflow-x: hidden;
 }
 
-.fondo-altura{
-    max-height: 20vh;
-}
 
 .tamaño{/*tamaño carrusel*/
     max-height: 800px;
@@ -203,13 +200,6 @@ html, body{/*Fondo de pantalla*/
     color: black;
     font-size: 1.1rem;
     font-weight: 600;
-}
-
-.boton-grande{
-    min-height: 1rem;
-    min-width: 6rem;
-    height: 4.5vh;
-    width: 6vw;
 }
 
 .logo{
