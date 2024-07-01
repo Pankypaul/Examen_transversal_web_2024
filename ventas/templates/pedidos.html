@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Mis Pedidos</h1>
+    {% if pedidos %}
+        <ul>
+            {% for pedido in pedidos %}
+                <li>
+                    Número de Pedido: {{ pedido.id_compra }} <br>
+                    Producto: {{ pedido.videojuego.nom_juego }} <br>
+                    Cantidad: {{ pedido.cantidad }} <br>
+                    Dirección de Envío: {{ pedido.direccion_envio }}
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes pedidos realizados.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

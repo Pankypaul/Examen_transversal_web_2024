@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Todos los Pedidos</h1>
+    {% if pedidos_por_usuario %}
+        {% for usuario, pedidos in pedidos_por_usuario.items %}
+            <h2>{{ usuario.username }}</h2>
+            {% if pedidos %}
+                <ul>
+                    {% for pedido in pedidos %}
+                        <li>
+                            Número de Pedido: {{ pedido.id_compra }} <br>
+                            Producto: {{ pedido.videojuego.nom_juego }} <br>
+                            Cantidad: {{ pedido.cantidad }} <br>
+                            Dirección de Envío: {{ pedido.direccion_envio }}
+                        </li>
+                        <hr>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay pedidos para este usuario.</p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No hay pedidos registrados.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

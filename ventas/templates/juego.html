@@ -38,11 +38,15 @@
                         <p>${{ precio_formateado }}</p>
                     </div>
                 
+                    {% if videojuego.stock_juego > 0 %}
                     <form id="agregarCarritoForm" method="POST" action="{% url 'agregar_al_carrito' videojuego.id_producto %}">
                         {% csrf_token %}
                         <input type="hidden" id="cantidadInput" name="cantidad" value="1">
                         <button type="submit" class="d-flex btn btn-light mx-auto mt-4 mb-4 col-sm-4 col-md-4 col-lg-3 col-xl-2 negrita text-center">Agregar al Carrito</button>
                     </form>
+                    {% else %}
+                    <h3 class="text-danger text-center">¡Fuera de stock!</h3>
+                    {% endif %}
                 </div>
             </div>
         </div>

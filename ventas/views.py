@@ -151,26 +151,29 @@ def nosotros(request):
     }
     return render(request, 'nosotros.html', context)
 
-@login_required
 def agregar_al_carrito(request, videojuego_id):
     if request.method == 'POST':
         videojuego = get_object_or_404(Videojuego, id_producto=videojuego_id)
-        carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
 
-        cantidad = int(request.POST.get('cantidad', 1))
+        if request.user.is_authenticated:
+            carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
+            cantidad = int(request.POST.get('cantidad', 1))
+            elemento_carrito = ElementoCarrito.objects.filter(carrito=carrito, videojuego=videojuego).first()
 
-        elemento_carrito = ElementoCarrito.objects.filter(carrito=carrito, videojuego=videojuego).first()
+            if elemento_carrito is None:
+                elemento_carrito = ElementoCarrito.objects.create(
+                    carrito=carrito, videojuego=videojuego, precio=videojuego.precio, cantidad=cantidad
+                )
+            else:
+                elemento_carrito.cantidad = cantidad
+                elemento_carrito.save()
 
-        if elemento_carrito is None:
-            elemento_carrito = ElementoCarrito.objects.create(
-                carrito=carrito, videojuego=videojuego, precio=videojuego.precio, cantidad=cantidad
-            )
+            return redirect('ver_carrito')
         else:
-            elemento_carrito.cantidad = cantidad
-            elemento_carrito.save()
 
-        return redirect('ver_carrito')
-    
+            messages.warning(request, 'Debes iniciar sesión para agregar juegos al carrito.')
+            return redirect('login')
+
     return redirect('juego_detalle', videojuego_id=videojuego_id)
     
 @login_required(login_url='accounts/login/')
@@ -372,28 +375,67 @@ def obtener_carrito_usuario(usuario):
     return carrito
 
 def pagar(request):
+    carrito = obtener_carrito_usuario(request.user)
+
+    # Verificar si el carrito del usuario está vacío
+    if not carrito.elementocarrito_set.exists():
+        messages.error(request, 'Tu carrito está vacío. Agrega productos antes de proceder al pago.')
+        return redirect('ver_carrito')
+
     if request.method == 'POST':
         form = DetallesPagoForm(request.POST)
         if form.is_valid():
             detalles_pago = form.save(commit=False)
             detalles_pago.usuario = request.user
 
-            carrito = obtener_carrito_usuario(request.user)
-            if carrito:
-                for item in ElementoCarrito.objects.filter(carrito=carrito):
-                    compra = Compra(
-                        usuario=request.user,
-                        videojuego=item.videojuego,
-                        cantidad=item.cantidad,
-                        direccion_envio=detalles_pago.direccion_envio
-                    )
-                    compra.save()
+            for item in carrito.elementocarrito_set.all():
+                # Crear la compra
+                compra = Compra(
+                    usuario=request.user,
+                    videojuego=item.videojuego,
+                    cantidad=item.cantidad,
+                    direccion_envio=detalles_pago.direccion_envio
+                )
+                compra.save()
 
-                carrito.elementocarrito_set.all().delete()
-                carrito.delete()
+                # Restar el stock del videojuego
+                videojuego = item.videojuego
+                videojuego.stock_juego -= item.cantidad
+                videojuego.save()
 
+            # Limpiar el carrito
+            carrito.elementocarrito_set.all().delete()
+            carrito.delete()
+
+            messages.success(request, 'La compra se ha realizado correctamente.')
             return redirect('lista_inicio')
+
     else:
         form = DetallesPagoForm()
 
     return render(request, 'pagar.html', {'form': form})
+
+def mis_pedidos(request):
+    pedidos = Compra.objects.filter(usuario=request.user)
+
+    context = {
+        'pedidos': pedidos,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'pedidos.html', context)
+
+def todos_los_pedidos(request):
+    if request.user.is_staff:
+        usuarios=User.objects.filter(is_staff=False, is_superuser=False)
+        pedidos_por_usuario = {}
+
+        for usuario in usuarios:
+            pedidos = Compra.objects.filter(usuario=usuario)
+            pedidos_por_usuario[usuario] = pedidos
+
+        context = {
+            'pedidos_por_usuario': pedidos_por_usuario,
+        }
+        return render(request, 'todos_los_pedidos.html', context)
+    else:
+        return redirect('lista_inicio')
