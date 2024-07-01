@@ -1,9 +1,13 @@
 {% extends "base.html" %%}
 
 {% block content %}
-  <div class="container mt-5">
-    <h2>Has cerrado sesión</h2>
-    <p>Gracias por visitarnos. Esperamos verte pronto.</p>
-    <a href="{% url 'lista_inicio' %}" class="btn btn-primary">Volver al inicio</a>
+<section class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="fondo-carrito text-center mx-auto mb-4 mt-4 bordear p-4 " style="max-width: 500px;">
+    <div class="container mt-5">
+      <h2>Has cerrado sesión</h2>
+      <p>Gracias por visitarnos. Esperamos verte pronto.</p>
+      <a href="{% url 'lista_inicio' %}" class="btn btn-primary">Volver al inicio</a>
+    </div>
   </div>
+</section>
 {% endblock %}

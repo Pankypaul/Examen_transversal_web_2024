@@ -45,6 +45,7 @@ class RegistroUsuarioForm(UserCreationForm):
                            "Tu contraseña debe contener al menos 8 caracteres.<br>"
                            "Tu contraseña no puede ser una contraseña común.<br>"
                            "Tu contraseña no puede ser completamente numérica."),
+            
         }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
