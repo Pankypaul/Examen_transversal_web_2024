@@ -2,18 +2,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <main>
-    <section class="container d-flex justify-content-center align-items-center mt-2 mb-4 bordear" style="min-height: 90vh;">
-        <div class="fondo-carrito w-100 p-4 mx-auto bordear text-center" style="max-width: 700px;">
-            
-            <h2>Crear Cuenta</h2>
-            <hr>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Registrar</button>
-            </form>
+    <section class="container d-flex justify-content-center align-items-center flex-column mt-4 mb-4" style="min-height: 100vh;">
+        <div class=" fondo-carrito card  p-4 mx-auto shadow-lg col-lg-8 flex-column">
+            <div class="card-body">
+                <h2 class="card-title text-center">Crear Cuenta</h2>
+                <hr>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                    </div>
+                </form>
+
+                
+                
+            </div>
+        </div>
+
+
+        <div class=" container fondo-carrito card  p-4 mx-auto shadow-lg col-lg-8 flex-column mt-4">
+            <div class="fondo-carrito text-center bordear p-4 shadow-sm rounded">
+                <div class="mb-3">
+                    <p class="d-inline">¿Todavía no estás registrado?</p>
+                    <a href="{% url 'login' %}" class="btn btn-link">¡Pulsa aquí para unirte!</a>
+                </div>
+                <div>
+                    <p class="d-inline">¿Has olvidado tu contraseña?</p>
+                    <a href="{% url 'resetear_contrasena' %}" class="btn btn-link">Pulsa aquí</a>
+                </div>
+            </div>
         </div>
     </section>
 </main>

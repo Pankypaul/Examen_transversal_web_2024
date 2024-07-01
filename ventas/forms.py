@@ -41,7 +41,7 @@ class RegistroUsuarioForm(UserCreationForm):
             'password2': 'Confirmar contraseña'
         }
         help_texts = {
-            'password1': _("<br>Tu contraseña no puede ser demasiado similar a tu otra información personal.<br>"
+            'password1': _("<br><br>Tu contraseña no puede ser demasiado similar a tu otra información personal.<br>"
                            "Tu contraseña debe contener al menos 8 caracteres.<br>"
                            "Tu contraseña no puede ser una contraseña común.<br>"
                            "Tu contraseña no puede ser completamente numérica."),
