@@ -21,7 +21,16 @@
                             <a class="nav-link tam-fuente" href="{% url 'lista_videojuegos' %}">Juegos</a>
                         </li>
 
+                        {% if request.user.is_staff %}
+                        <li class="nav-item separar_items">
+                            <a class="nav-link tam-fuente" href="{% url 'todos_los_pedidos' %}">Todos los Pedidos</a>
+                        </li>
+                        {% endif %}
+
                         {% if user.is_authenticated %}
+                        <li class="nav-item separar_items">
+                            <a class="nav-link tam-fuente" href="{% url 'mis_pedidos' %}">Mis Pedidos</a>
+                        </li>
                         <li class="nav-item separar_items">
                             <a class="nav-link tam-fuente" href="{% url 'confirm_logout' %}">Cerrar sesión</a>
                         </li>

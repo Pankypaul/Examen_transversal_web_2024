@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container mt-5">
-    <h2>Deseas cerrar sesión?</h2>
-    <form method="post" action="{% url 'confirm_logout' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Cerrar sesión</button>
-      <a href="{% url 'lista_inicio' %}" class="btn btn-secondary">Cancelar</a>
-    </form>
+<section class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="fondo-carrito text-center mx-auto mb-2  bordear p-2 " style="max-width: 500px;">
+    <div class="container mt-3">
+      <h2>Deseas cerrar sesión?</h2>
+      <hr>
+      <form method="post" action="{% url 'confirm_logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+        <a href="{% url 'lista_inicio' %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
   </div>
+</section>
 {% endblock %}

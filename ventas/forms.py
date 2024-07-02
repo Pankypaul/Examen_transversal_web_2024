@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import six
+import re
 
 class VideojuegoForm(forms.ModelForm):
     class Meta:
@@ -26,9 +27,29 @@ class ComunaForm(forms.ModelForm):
     class Meta:
         model = Comuna
         fields = ['nombre']
+        
+def validate_letters_and_accents(value):
+    pattern = r'^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$'
+    if not re.match(pattern, value):
+        raise ValidationError(
+            _('Este campo solo puede contener letras y acentuaciones.'),
+            code='invalid_characters'
+        )
+
+# Función de validación para verificar si una cadena contiene solo letras y acentuaciones, sin espacios
+def validate_letters_and_accents_no_spaces(value):
+    pattern = r'^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$'
+    if not re.match(pattern, value):
+        raise ValidationError(
+            _('Este campo solo puede contener letras y acentuaciones, sin espacios.'),
+            code='invalid_characters_no_spaces'
+        )
 
 class RegistroUsuarioForm(UserCreationForm):
     email = forms.EmailField(label='Correo electrónico')
+    first_name = forms.CharField(label='Nombre', validators=[validate_letters_and_accents])
+    last_name = forms.CharField(label='Apellido', validators=[validate_letters_and_accents])
+
 
     class Meta:
         model = User
@@ -41,16 +62,24 @@ class RegistroUsuarioForm(UserCreationForm):
             'password2': 'Confirmar contraseña'
         }
         help_texts = {
-            'password1': _("<br>Tu contraseña no puede ser demasiado similar a tu otra información personal.<br>"
+            'password1': _("<br><br>Tu contraseña no puede ser demasiado similar a tu otra información personal.<br>"
                            "Tu contraseña debe contener al menos 8 caracteres.<br>"
                            "Tu contraseña no puede ser una contraseña común.<br>"
                            "Tu contraseña no puede ser completamente numérica."),
+            
         }
+        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = True
         self.fields['password1'].validators = []
         self.fields['password1'].help_text = self.Meta.help_texts['password1']
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError('Este correo electrónico ya está registrado como nombre de usuario.')
+        return email
 
     
     def save(self, commit=True):
