@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <section class="d-flex justify-content-center align-items-center col-lg-12" style="min-height: 100vh;">
+        <div class="text-center mx-auto mb-4 mt-4 p-2" style="max-width: 800px; border: 1px solid black; background-color: rgb(133, 145, 140);">
+            <h1>Todos los Pedidos</h1>
+            <hr>
+            {% if pedidos_por_usuario %}
+                {% for usuario, pedidos in pedidos_por_usuario.items %}
+                    <div class="mb-2 text-center mt-4" style="border: 1px solid black; border-radius: 3px;">
+                        <h2>{{ usuario.username }}</h2>
+                    </div>
+                    {% if pedidos %}
+                    <ul class="list-group col-sm-12 col-lg-12 col-xs-4 " style="text-align: left; border: 1px solid black; padding: 10px;">
+                        {% for pedido in pedidos %}
+                            <li class="list-group-item " style="border: 1px solid black; border-radius: 5px;">
+                                <strong style="color: black;">- Número de Pedido:</strong> {{ pedido.id_compra }} <br>
+                                <strong style="color: black;">- Producto:</strong> {{ pedido.videojuego.nom_juego }} <br>
+                                <strong style="color: black;">- Cantidad:</strong> {{ pedido.cantidad }} <br>
+                                <strong style="color: black;">- Dirección de Envío:</strong> {{ pedido.direccion_envio }}
+                            </li>
+                            <hr>
+                        {% endfor %}
+                    </ul>
+            {% else %}
+                <p>No tienes pedidos realizados.</p>
+            {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No hay pedidos registrados.</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
+
