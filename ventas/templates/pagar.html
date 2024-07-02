@@ -3,12 +3,12 @@
 {% block content %}
 <main class="container-fluid mx-auto">
     <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="text-center">Detalles de Pago</h4>
+        <div class="col-lg-7 justify-content-center row">
+            <div class="card fondo-carrito mb-4 col-12 col-md-7 col-sm-6">
+                <div class="card-header ">
+                    <h3 class="text-center">Detalles de Pago</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body row mx-auto">
                     <form method="post" class="form" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.non_field_errors }}
@@ -22,12 +22,14 @@
                             {{ form.tarjeta }}
                             {{ form.tarjeta.errors }}
                         </div>
-                        <div class="form-group">
+                        <div class="form-group  ">
                             <label for="{{ form.cvv.id_for_label }}">CVV</label>
                             {{ form.cvv }}
                             {{ form.cvv.errors }}
                         </div>
-                        <button type="submit" class="btn btn-primary">Pagar</button>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary ">Pagar</button>
+                        </div>
                     </form>
                 </div>
             </div>
