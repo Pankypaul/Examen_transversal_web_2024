@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% block content %}
 <div>
     <h1 class="centrar_titulo mt-3 tam-titulo">
@@ -77,6 +78,14 @@
                         <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
                             <p class="card-text texto-card">{{ videojuego.id_consola.nombre }}</p>
                         </a>
+                        <hr>
+                        <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
+                          <p class="card-text texto-card">{{ videojuego.stock_juego }} disponibles</p>
+                        </a>
+                        <a href="{% url 'juego_detalle' videojuego.pk %}" class="text-decoration-none">
+                          <p class="card-text texto-card">${{ videojuego.precio|intcomma }}</p>
+                        </a>
+ 
                     </div>
                 </div>
             </div>

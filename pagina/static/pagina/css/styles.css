@@ -372,3 +372,9 @@ html, body{/*Fondo de pantalla*/
         font-size: 1.1rem;
     }
 }
+
+.tamaño-noticia {
+    max-height: 226px;
+    max-width: 100%;
+    object-fit: cover;
+}
