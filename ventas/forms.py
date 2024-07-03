@@ -141,6 +141,7 @@ class TokenGenerator(PasswordResetTokenGenerator):
 account_activation_token = TokenGenerator()
 
 class DetallesPagoForm(forms.ModelForm):
+    direccion_envio = forms.CharField(label = 'direccion_envio', max_length=100, required=True)
     tarjeta = forms.CharField(label='Número de tarjeta', max_length=16, required=True)
     cvv = forms.CharField(label='CVV', max_length=4, required=True)
 
